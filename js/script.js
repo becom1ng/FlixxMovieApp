@@ -5,7 +5,6 @@ const global = {
 // Display top 20 movies by popularity
 async function displayPopularMovies() {
 	const { results } = await fetchAPIData('movie/popular');
-	console.log(results);
 
 	results.forEach((movie) => {
 		const div = document.createElement('div');
@@ -39,7 +38,6 @@ async function displayPopularMovies() {
 // Display top 20 tv shows by popularity
 async function displayPopularShows() {
 	const { results } = await fetchAPIData('tv/popular');
-	console.log(results);
 
 	results.forEach((show) => {
 		const div = document.createElement('div');
@@ -221,6 +219,57 @@ function displayBackgroundImage(type, backgroundPath) {
 	}
 }
 
+// Displayer slider movies
+async function displaySlider() {
+	const { results } = await fetchAPIData('movie/now_playing');
+
+	results.forEach((movie) => {
+		const div = document.createElement('div');
+		div.classList.add('swiper-slide');
+		div.innerHTML = `
+            <a href="movie-details.html?id=${movie.id}">
+            <img src="https://image.tmdb.org/t/p/w500${
+							movie.poster_path
+						}" alt="${movie.title}" />
+            </a>
+            <h4 class="swiper-rating">
+            <i class="fas fa-star text-secondary"></i> ${movie.vote_average.toFixed(
+							1,
+						)} / 10
+            </h4>
+        `;
+
+		document.querySelector('.swiper-wrapper').appendChild(div);
+
+		initSwiper();
+	});
+}
+
+// Init and config Swiper/Slider
+function initSwiper() {
+	const swiper = new Swiper('.swiper', {
+		slidesPerView: 1,
+		spaceBetween: 30,
+		freeMode: true,
+		loop: true,
+		autoplay: {
+			delay: 4000,
+			disableOnInteraction: false,
+		},
+		breakpoints: {
+			500: {
+				slidesPerView: 2,
+			},
+			700: {
+				slidesPerView: 3,
+			},
+			1200: {
+				slidesPerView: 4,
+			},
+		},
+	});
+}
+
 // Fetch data from API
 async function fetchAPIData(endpoint) {
 	// Only use this for development or very small projects.
@@ -268,6 +317,7 @@ function init() {
 		case '/':
 		case '/index.html':
 			displayPopularMovies();
+			displaySlider();
 			break;
 		case '/shows.html':
 			displayPopularShows();
