@@ -8,8 +8,7 @@ const global = {
 		totalResults: 0,
 	},
 	api: {
-		// Only use this for development or very small projects.
-		// Key should be stored and used from a server.
+		// Only for development or very small projects. Store and use from a server if project is expanded.
 		apiKey: '30c944644c462584bb8878ea91643e2c',
 		apiUrl: 'https://api.themoviedb.org/3/',
 	},
